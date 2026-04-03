@@ -335,14 +335,13 @@ export default function App() {
                           <div style={{ flex: 1 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                               <span style={{ fontSize: 20 }}>🚌💨</span>
-                              <span style={{ fontWeight: 700, fontSize: 15, color: '#818cf8' }}>Bus just left!</span>
+                              <span style={{ fontWeight: 700, fontSize: 15, color: '#818cf8' }}>
+                                Bus {busRoute} just left {r.boarding_stop || 'a stop'}
+                              </span>
                             </div>
-                            <p style={{ margin: 0, fontSize: 13, color: '#94a3b8' }}>Wait for the next one</p>
-                            {r.boarding_stop && (
-                              <p style={{ margin: '4px 0 0', fontSize: 12, color: '#64748b' }}>
-                                📍 At <span style={{ color: '#cbd5e1', fontWeight: 600 }}>{r.boarding_stop}</span>
-                              </p>
-                            )}
+                            <p style={{ margin: 0, fontSize: 13, color: '#94a3b8' }}>
+                              {ago === 'just now' ? 'Just departed — heading your way' : `Left ${ago} — should reach you soon`}
+                            </p>
                             {/* Reporter name */}
                             <p style={{ margin: '4px 0 0', fontSize: 11, color: '#475569' }}>
                               👤 {r.reporter_name || 'Anonymous'}
