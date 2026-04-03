@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Database connection
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 pool.query('SELECT NOW()', (err, result) => {
@@ -14,6 +15,17 @@ pool.query('SELECT NOW()', (err, result) => {
   else console.log('Database connected:', result.rows[0]);
 });
 
+// ✅ ROOT ROUTE (for browser test)
+app.get('/', (req, res) => {
+  res.send('Bus Crowding Backend Running 🚀');
+});
+
+// ✅ PING ROUTE (for cron / uptime)
+app.get('/ping', (req, res) => {
+  res.status(200).send('alive');
+});
+
+// ✅ HEALTH CHECK (API style)
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Backend is running' });
 });
@@ -28,7 +40,8 @@ app.post('/api/reports', async (req, res) => {
     }
 
     const query = `
-      INSERT INTO crowding_reports (bus_route, crowding_level, boarding_stop, just_left, reporter_name, helpful_count, view_count, timestamp)
+      INSERT INTO crowding_reports 
+      (bus_route, crowding_level, boarding_stop, just_left, reporter_name, helpful_count, view_count, timestamp)
       VALUES ($1, $2, $3, $4, $5, 0, 0, NOW())
       RETURNING *;
     `;
@@ -48,12 +61,12 @@ app.post('/api/reports', async (req, res) => {
   }
 });
 
-// GET: Fetch reports for a route (last 30 mins, increment view count)
+// GET: Fetch reports for a route
 app.get('/api/reports/:busRoute', async (req, res) => {
   try {
     const { busRoute } = req.params;
 
-    // Increment view count on all recent reports for this route
+    // Increment view count
     await pool.query(`
       UPDATE crowding_reports
       SET view_count = view_count + 1
@@ -81,6 +94,7 @@ app.get('/api/reports/:busRoute', async (req, res) => {
 app.post('/api/reports/:id/helpful', async (req, res) => {
   try {
     const { id } = req.params;
+
     const result = await pool.query(`
       UPDATE crowding_reports
       SET helpful_count = helpful_count + 1
@@ -92,12 +106,16 @@ app.post('/api/reports/:id/helpful', async (req, res) => {
       return res.status(404).json({ error: 'Report not found' });
     }
 
-    res.json({ success: true, helpful_count: result.rows[0].helpful_count });
+    res.json({
+      success: true,
+      helpful_count: result.rows[0].helpful_count
+    });
   } catch (error) {
     console.error('Error updating helpful count:', error);
     res.status(500).json({ error: 'Failed to update' });
   }
 });
 
+// 🚀 Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
