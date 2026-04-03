@@ -8,7 +8,10 @@ app.use(cors());
 app.use(express.json());
 
 // Database connection
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
 
 pool.query('SELECT NOW()', (err, result) => {
   if (err) console.error('Database connection failed:', err);
