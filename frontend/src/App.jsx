@@ -130,7 +130,127 @@ function getCurrentSlot() {
   return istHour < 12 ? 'morning' : 'evening';
 }
 
+const ADMIN_PASSWORD = 'maddy123'; // change this to whatever you want
+
+function AdminPage() {
+  const [password, setPassword] = useState('');
+  const [authenticated, setAuthenticated] = useState(false);
+  const [allReports, setAllReports] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchAllReports = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/admin/reports`);
+      const data = await res.json();
+      setAllReports(Array.isArray(data) ? data : []);
+    } catch (e) {
+      console.error('Admin fetch error:', e);
+    }
+    setLoading(false);
+  };
+
+  if (!authenticated) {
+    return (
+      <div style={{ fontFamily: "'Segoe UI', sans-serif", background: '#0f172a', minHeight: '100vh', color: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: '#1e293b', borderRadius: 16, padding: 32, width: 300 }}>
+          <h2 style={{ margin: '0 0 20px', textAlign: 'center' }}>🔐 Admin Login</h2>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter' && password === ADMIN_PASSWORD) { setAuthenticated(true); fetchAllReports(); } }}
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 8, background: '#334155', border: '1px solid #475569', color: '#f1f5f9', fontSize: 14, outline: 'none', boxSizing: 'border-box', marginBottom: 12 }}
+          />
+          <button
+            onClick={() => { if (password === ADMIN_PASSWORD) { setAuthenticated(true); fetchAllReports(); } else alert('Wrong password'); }}
+            style={{ width: '100%', padding: '12px', borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ fontFamily: "'Segoe UI', sans-serif", background: '#0f172a', minHeight: '100vh', color: '#f1f5f9' }}>
+      <div style={{ background: 'linear-gradient(135deg, #1e3a5f, #0f172a)', padding: '20px 16px 12px', borderBottom: '1px solid #1e293b' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontSize: 28 }}>🛠️</span>
+            <div>
+              <h1 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>Admin Panel</h1>
+              <p style={{ margin: 0, fontSize: 12, color: '#94a3b8' }}>{allReports.length} total reports</p>
+            </div>
+          </div>
+          <button onClick={fetchAllReports} style={{ padding: '8px 16px', borderRadius: 8, border: 'none', background: '#334155', color: '#94a3b8', cursor: 'pointer', fontWeight: 600 }}>
+            🔄 Refresh
+          </button>
+        </div>
+      </div>
+
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: 16 }}>
+        {loading ? (
+          <p style={{ textAlign: 'center', color: '#64748b' }}>Loading...</p>
+        ) : allReports.length === 0 ? (
+          <p style={{ textAlign: 'center', color: '#64748b' }}>No reports yet.</p>
+        ) : (
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <thead>
+                <tr style={{ background: '#1e293b', color: '#94a3b8', textAlign: 'left' }}>
+                  {['Time', 'Route', 'Stop', 'Type', 'Crowding', 'AC', 'Reporter', '👍'].map(h => (
+                    <th key={h} style={{ padding: '10px 12px', fontWeight: 600 }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {allReports.map((r, i) => {
+                  const { timeStr, ago } = formatTimestamp(r.timestamp);
+                  return (
+                    <tr key={i} style={{ background: i % 2 === 0 ? '#0f172a' : '#1e293b', borderBottom: '1px solid #1e293b' }}>
+                      <td style={{ padding: '10px 12px', color: '#cbd5e1' }}>
+                        <span style={{ fontWeight: 600 }}>{timeStr}</span>
+                        <span style={{ display: 'block', fontSize: 11, color: '#475569' }}>{ago}</span>
+                      </td>
+                      <td style={{ padding: '10px 12px' }}>
+                        <span style={{ background: '#3b82f6', color: '#fff', borderRadius: 6, padding: '2px 8px', fontWeight: 700 }}>{r.bus_route}</span>
+                      </td>
+                      <td style={{ padding: '10px 12px', color: '#94a3b8' }}>{r.boarding_stop || '—'}</td>
+                      <td style={{ padding: '10px 12px' }}>
+                        {r.just_left
+                          ? <span style={{ color: '#818cf8', fontWeight: 600 }}>🚌💨 Just Left</span>
+                          : <span style={{ color: '#94a3b8' }}>📊 Crowding</span>}
+                      </td>
+                      <td style={{ padding: '10px 12px' }}>
+                        {r.just_left ? '—' : (
+                          <span style={{ color: r.crowding_level >= 90 ? '#ef4444' : r.crowding_level >= 50 ? '#eab308' : '#22c55e', fontWeight: 700 }}>
+                            {r.crowding_level}%
+                          </span>
+                        )}
+                      </td>
+                      <td style={{ padding: '10px 12px' }}>
+                        {r.is_ac ? <span style={{ color: '#38bdf8' }}>❄️ AC</span> : <span style={{ color: '#a8a29e' }}>🌡️ Non-AC</span>}
+                      </td>
+                      <td style={{ padding: '10px 12px', color: '#cbd5e1', fontWeight: 600 }}>{r.reporter_name || 'Anonymous'}</td>
+                      <td style={{ padding: '10px 12px', color: '#64748b' }}>{r.helpful_count || 0}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
+  // Show admin page if ?admin=true in URL
+  const isAdmin = new URLSearchParams(window.location.search).get('admin') === 'true';
   const [busRoute, setBusRoute] = useState('19');
   const [crowdingPct, setCrowdingPct] = useState(null);
   const [boardingStop, setBoardingStop] = useState('');
@@ -145,6 +265,8 @@ export default function App() {
   });
   const [timeFilter, setTimeFilter] = useState(getCurrentSlot()); // 'morning' | 'evening'
   const [isAC, setIsAC] = useState(false);
+
+  if (isAdmin) return <AdminPage />;
 
   const stops = BUS_DATA[busRoute]?.stops || [];
 
