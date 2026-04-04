@@ -53,7 +53,19 @@ const BUS_DATA = {
   },
   'MAA2': {
     label: 'Bus MAA2',
-    stops: ['Thoraipakkam', 'Karapakkam', 'Sholinganallur', 'Kumaran Nagar', 'Navalur', 'Siruseri', 'Kazhipattur'],
+    stops: [
+      'Chennai Airport',
+      'Pallavaram',
+      'Vels University',
+      'Eachangadu Junction',
+      'Kamakshi Memorial Hospital',
+      'Thoraipakkam / Chennai One',
+      'Mettukuppam',
+      'Sholinganallur',
+      'Sathyabama University',
+      'Navalur',
+      'Siruseri IT Park',
+    ],
   },
 };
 
