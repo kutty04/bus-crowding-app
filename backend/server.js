@@ -36,7 +36,7 @@ app.get('/api/health', (req, res) => {
 // POST: Submit crowding report
 app.post('/api/reports', async (req, res) => {
   try {
-    const { busRoute, crowdingLevel, boardingStop, justLeft, reporterName, isAC } = req.body;
+    const { busRoute, crowdingLevel, boardingStop, justLeft, reporterName } = req.body;
 
     if (!busRoute) {
       return res.status(400).json({ error: 'Missing bus route' });
@@ -44,8 +44,8 @@ app.post('/api/reports', async (req, res) => {
 
     const query = `
       INSERT INTO crowding_reports 
-      (bus_route, crowding_level, boarding_stop, just_left, reporter_name, is_ac, helpful_count, timestamp)
-      VALUES ($1, $2, $3, $4, $5, $6, 0, NOW())
+      (bus_route, crowding_level, boarding_stop, just_left, reporter_name, helpful_count, timestamp)
+      VALUES ($1, $2, $3, $4, $5, 0, NOW())
       RETURNING *;
     `;
 
@@ -55,7 +55,6 @@ app.post('/api/reports', async (req, res) => {
       boardingStop || null,
       justLeft ? true : false,
       reporterName ? reporterName.trim().slice(0, 50) : 'Anonymous',
-      isAC ? true : false,
     ]);
 
     res.json({ success: true, report: result.rows[0] });
@@ -109,6 +108,22 @@ app.post('/api/reports/:id/helpful', async (req, res) => {
   } catch (error) {
     console.error('Error updating helpful count:', error);
     res.status(500).json({ error: 'Failed to update' });
+  }
+});
+
+// GET: Admin — fetch all reports (last 24 hours)
+app.get('/api/admin/reports', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM crowding_reports
+      WHERE timestamp > NOW() - INTERVAL '24 hours'
+      ORDER BY timestamp DESC
+      LIMIT 200;
+    `);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Admin fetch error:', error);
+    res.status(500).json({ error: 'Failed to fetch' });
   }
 });
 
