@@ -36,7 +36,7 @@ app.get('/api/health', (req, res) => {
 // POST: Submit crowding report
 app.post('/api/reports', async (req, res) => {
   try {
-    const { busRoute, crowdingLevel, boardingStop, justLeft, reporterName } = req.body;
+    const { busRoute, crowdingLevel, boardingStop, justLeft, reporterName, isAC } = req.body;
 
     if (!busRoute) {
       return res.status(400).json({ error: 'Missing bus route' });
@@ -44,8 +44,8 @@ app.post('/api/reports', async (req, res) => {
 
     const query = `
       INSERT INTO crowding_reports 
-      (bus_route, crowding_level, boarding_stop, just_left, reporter_name, helpful_count, view_count, timestamp)
-      VALUES ($1, $2, $3, $4, $5, 0, 0, NOW())
+      (bus_route, crowding_level, boarding_stop, just_left, reporter_name, is_ac, helpful_count, timestamp)
+      VALUES ($1, $2, $3, $4, $5, $6, 0, NOW())
       RETURNING *;
     `;
 
@@ -55,6 +55,7 @@ app.post('/api/reports', async (req, res) => {
       boardingStop || null,
       justLeft ? true : false,
       reporterName ? reporterName.trim().slice(0, 50) : 'Anonymous',
+      isAC ? true : false,
     ]);
 
     res.json({ success: true, report: result.rows[0] });
@@ -68,14 +69,6 @@ app.post('/api/reports', async (req, res) => {
 app.get('/api/reports/:busRoute', async (req, res) => {
   try {
     const { busRoute } = req.params;
-
-    // Increment view count
-    await pool.query(`
-      UPDATE crowding_reports
-      SET view_count = view_count + 1
-      WHERE bus_route = $1
-        AND timestamp > NOW() - INTERVAL '30 minutes'
-    `, [busRoute]);
 
     const query = `
       SELECT * FROM crowding_reports

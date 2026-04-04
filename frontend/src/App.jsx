@@ -144,6 +144,7 @@ export default function App() {
     try { return JSON.parse(localStorage.getItem('helpedIds') || '[]'); } catch { return []; }
   });
   const [timeFilter, setTimeFilter] = useState(getCurrentSlot()); // 'morning' | 'evening'
+  const [isAC, setIsAC] = useState(false);
 
   const stops = BUS_DATA[busRoute]?.stops || [];
 
@@ -198,6 +199,7 @@ export default function App() {
           boardingStop,
           justLeft: isJustLeft,
           reporterName: reporterName.trim() || 'Anonymous',
+          isAC,
         }),
       });
       if (res.ok) {
@@ -354,6 +356,15 @@ export default function App() {
                             <p style={{ margin: 0, fontSize: 13, color: '#94a3b8' }}>
                               {ago === 'just now' ? 'Just departed — heading your way' : `Left ${ago} — should reach you soon`}
                             </p>
+                            {/* AC Badge */}
+                            <span style={{
+                              display: 'inline-block', marginTop: 6,
+                              background: r.is_ac ? '#0c4a6e' : '#1c1917',
+                              color: r.is_ac ? '#38bdf8' : '#a8a29e',
+                              borderRadius: 6, padding: '2px 8px', fontSize: 11, fontWeight: 700,
+                            }}>
+                              {r.is_ac ? '❄️ AC' : '🌡️ Non-AC'}
+                            </span>
                             {/* Reporter name */}
                             <p style={{ margin: '4px 0 0', fontSize: 11, color: '#475569' }}>
                               👤 {r.reporter_name || 'Anonymous'}
@@ -369,9 +380,6 @@ export default function App() {
                               }}>
                                 👍 {r.helpful_count || 0} helpful
                               </button>
-                              <span style={{ fontSize: 12, color: '#475569', alignSelf: 'center' }}>
-                                👁 {r.view_count || 0}
-                              </span>
                             </div>
                           </div>
                           <div style={{ textAlign: 'right', marginLeft: 8 }}>
@@ -393,6 +401,15 @@ export default function App() {
                             <span style={{ fontWeight: 700, fontSize: 16, color: style.color }}>{r.crowding_level}% Crowded</span>
                           </div>
                           <p style={{ margin: 0, fontSize: 13, color: '#94a3b8' }}>{style.desc}</p>
+                          {/* AC Badge */}
+                          <span style={{
+                            display: 'inline-block', marginTop: 6,
+                            background: r.is_ac ? '#0c4a6e' : '#1c1917',
+                            color: r.is_ac ? '#38bdf8' : '#a8a29e',
+                            borderRadius: 6, padding: '2px 8px', fontSize: 11, fontWeight: 700,
+                          }}>
+                            {r.is_ac ? '❄️ AC' : '🌡️ Non-AC'}
+                          </span>
                           {r.boarding_stop && (
                             <p style={{ margin: '4px 0 0', fontSize: 12, color: '#64748b' }}>
                               📍 Reported at <span style={{ color: '#cbd5e1', fontWeight: 600 }}>{r.boarding_stop}</span>
@@ -413,9 +430,6 @@ export default function App() {
                             }}>
                               👍 {r.helpful_count || 0} helpful
                             </button>
-                            <span style={{ fontSize: 12, color: '#475569', alignSelf: 'center' }}>
-                              👁 {r.view_count || 0}
-                            </span>
                           </div>
                         </div>
                         <div style={{ textAlign: 'right', marginLeft: 8 }}>
@@ -469,6 +483,24 @@ export default function App() {
                     transition: 'all 0.15s',
                   }}>
                     {stop}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* AC Toggle */}
+            <div style={{ background: '#1e293b', borderRadius: 12, padding: 16 }}>
+              <p style={{ margin: '0 0 10px', fontSize: 13, color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Bus Type</p>
+              <div style={{ display: 'flex', gap: 10 }}>
+                {[{ val: false, label: '🌡️ Non-AC' }, { val: true, label: '❄️ AC' }].map(opt => (
+                  <button key={String(opt.val)} onClick={() => setIsAC(opt.val)} style={{
+                    flex: 1, padding: '12px', borderRadius: 10, border: 'none', cursor: 'pointer',
+                    fontWeight: 700, fontSize: 14,
+                    background: isAC === opt.val ? (opt.val ? '#0c4a6e' : '#1c1917') : '#334155',
+                    color: isAC === opt.val ? (opt.val ? '#38bdf8' : '#d6d3d1') : '#94a3b8',
+                    transition: 'all 0.15s',
+                  }}>
+                    {opt.label}
                   </button>
                 ))}
               </div>
