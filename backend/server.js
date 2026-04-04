@@ -119,6 +119,16 @@ app.post('/api/reports/:id/helpful', async (req, res) => {
   }
 });
 
+// 🧹 Auto-delete reports older than 1 hour — runs every 30 mins
+setInterval(async () => {
+  try {
+    const result = await pool.query(`DELETE FROM crowding_reports WHERE timestamp < NOW() - INTERVAL '1 hour'`);
+    console.log(`Cleanup: deleted ${result.rowCount} old reports`);
+  } catch (e) {
+    console.error('Cleanup failed:', e);
+  }
+}, 30 * 60 * 1000);
+
 // 🚀 Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
