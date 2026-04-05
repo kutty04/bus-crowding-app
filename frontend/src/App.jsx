@@ -347,22 +347,21 @@ export default function App() {
 
         {/* Route Selector */}
         <div style={{ background: '#1e293b', borderRadius: 12, padding: 16, marginBottom: 16 }}>
-          <p style={{ margin: '0 0 8px', fontSize: 12, color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Select Route</p>
-          <select
-            value={busRoute}
-            onChange={e => setBusRoute(e.target.value)}
-            style={{
-              width: '100%', padding: '10px 12px', borderRadius: 8,
-              background: '#334155', border: '1px solid #475569',
-              color: '#f1f5f9', fontSize: 15, fontWeight: 600, outline: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            {Object.entries(BUS_DATA).map(([key, val]) => (
-              <option key={key} value={key}>{val.label}</option>
+          <p style={{ margin: '0 0 10px', fontSize: 12, color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Select Route</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {Object.entries(BUS_DATA).map(([key]) => (
+              <button key={key} onClick={() => setBusRoute(key)} style={{
+                padding: '8px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
+                fontWeight: 600, fontSize: 13,
+                background: busRoute === key ? '#3b82f6' : '#334155',
+                color: busRoute === key ? '#fff' : '#cbd5e1',
+                transition: 'all 0.15s',
+              }}>
+                {key}
+              </button>
             ))}
-          </select>
-          <p style={{ margin: '8px 0 0', fontSize: 11, color: '#475569', lineHeight: 1.5 }}>
+          </div>
+          <p style={{ margin: '10px 0 0', fontSize: 11, color: '#475569', lineHeight: 1.5 }}>
             {BUS_DATA[busRoute]?.stops.join(' → ')}
           </p>
         </div>
