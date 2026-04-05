@@ -513,7 +513,7 @@ export default function App() {
               <p style={{ margin: '0 0 10px', fontSize: 13, color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Your Name</p>
               <input
                 type="text"
-                placeholder="e.g. Arun, Priya... (optional)"
+                placeholder="e.g. Maddy, Priya... (optional)"
                 value={reporterName}
                 onChange={e => setReporterName(e.target.value)}
                 maxLength={50}
