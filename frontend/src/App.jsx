@@ -361,7 +361,7 @@ export default function App() {
               </button>
             ))}
           </div>
-          <p style={{ margin: '10px 0 0', fontSize: 11, color: '#475569', lineHeight: 1.5 }}>
+          <p style={{ margin: '10px 0 0', fontSize: 13, color: '#94a3b8', lineHeight: 1.6 }}>
             {BUS_DATA[busRoute]?.stops.join(' → ')}
           </p>
         </div>
