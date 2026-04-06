@@ -3,38 +3,166 @@ import { useState, useEffect } from 'react';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const BUS_DATA = {
-  '19': { label: 'Bus 19', stops: ['T. Nagar', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Navalur', 'Kazhipattur'] },
-  '19A': { label: 'Bus 19A', stops: ['T. Nagar', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Chemmenchery'] },
-  '19B': { label: 'Bus 19B', stops: ['Saidapet', 'Madhya Kailash', 'Tidel Park', 'Sholinganallur', 'Navalur', 'Kelambakkam'] },
-  '19B ET': { label: 'Bus 19B ET', stops: ['T. Nagar', 'Adyar', 'Sholinganallur', 'Navalur', 'Thaiyur', 'Koman Nagar Road Junction'] },
-  '5G': { label: 'Bus 5G', stops: ['Saidapet', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kelambakkam'] },
-  '5S': { label: 'Bus 5S', stops: ['Saidapet', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kannagi Nagar'] },
-  '91': { label: 'Bus 91', stops: ['Tambaram', 'Chromepet / MIT', 'Pallavaram', 'Vels University', 'Eachangadu', 'Kamakshi Hospital', 'Thoraipakkam', 'Perungudi', 'SRP Tools', 'Thiruvanmiyur Depot'] },
-  '95': { label: 'Bus 95', stops: ['T. Nagar', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Tambaram East'] },
-  '95X': { label: 'Bus 95X', stops: ['Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam'] },
-  '102': { label: 'Bus 102', stops: ['Broadway', 'Adyar', 'SRP Tools', 'Perungudi', 'Sholinganallur', 'Navalur', 'Kelambakkam'] },
-  '102C': { label: 'Bus 102C', stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Chemmenchery'] },
-  '102CT': { label: 'Bus 102CT', stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Siruseri / SIPCOT'] },
-  '102K': { label: 'Bus 102K', stops: ['Island Ground', 'Santhome', 'Adyar Depot', 'SRP Tools', 'Thoraipakkam', 'Kannagi Nagar'] },
-  '102P': { label: 'Bus 102P', stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Perumbakkam'] },
-  '109': { label: 'Bus 109', stops: ['Island Ground', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kovalam'] },
-  '119': { label: 'Bus 119', stops: ['Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Semmancheri'] },
-  '221': { label: 'Bus 221', stops: ['Central', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kelambakkam', 'Thirupporur'] },
-  '515': { label: 'Bus 515', stops: ['Tambaram', 'Vandalur Zoo', 'Kandigai', 'Mambakkam', 'Pudupakkam', 'Kelambakkam'] },
-  '519': { label: 'Bus 519', stops: ['T. Nagar', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Kelambakkam'] },
-  '523': { label: 'Bus 523', stops: ['Thiruvanmiyur', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Navalur', 'Siruseri'] },
-  '555G': { label: 'Bus 555G', stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam', 'Guduvanchery'] },
-  '555P': { label: 'Bus 555P', stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam', 'Padappai'] },
-  '555S': { label: 'Bus 555S', stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam'] },
-  '570': { label: 'Bus 570', stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Siruseri IT Park', 'Kelambakkam'] },
-  '570P': { label: 'Bus 570P', stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Perumbakkam'] },
-  '570X': { label: 'Bus 570X', stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Thirupporur'] },
-  'A1': { label: 'Bus A1', stops: ['Central', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kannagi Nagar'] },
-  'M19B': { label: 'Bus M19B', stops: ['T. Nagar', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kannagi Nagar'] },
-  'MAA2': { label: 'Bus MAA2', stops: ['Chennai Airport', 'Pallavaram', 'Vels University', 'Eachangadu', 'Kamakshi Hospital', 'Thoraipakkam', 'Sholinganallur', 'Sathyabama University', 'Navalur', 'Siruseri IT Park'] },
-  'T29C': { label: 'Bus T29C', stops: ['Perambur', 'Central', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur'] },
-  '29A': { label: 'Bus 29A', stops: ['Perambur', 'Central', 'Anna Square'] },
-  '29C': { label: 'Bus 29C', stops: ['Perambur', 'Central', 'Adyar', 'Thiruvanmiyur'] },
+  '19': {
+    label: 'Bus 19',
+    from: 'T. Nagar', to: 'Thirupporur',
+    stops: ['T. Nagar', 'Saidapet', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Kumaran Nagar', 'Semmancheri', 'Navalur', 'Kelambakkam', 'Thirupporur'],
+  },
+  '19A': {
+    label: 'Bus 19A',
+    from: 'T. Nagar', to: 'Chemmenchery',
+    stops: ['T. Nagar', 'Saidapet', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Chemmenchery'],
+  },
+  '19B': {
+    label: 'Bus 19B',
+    from: 'Saidapet', to: 'Kelambakkam',
+    stops: ['Saidapet', 'Madhya Kailash', 'Tidel Park', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
+  },
+  '19B ET': {
+    label: 'Bus 19B ET',
+    from: 'T. Nagar', to: 'Thaiyur',
+    stops: ['T. Nagar', 'Sholinganallur', 'Navalur', 'Kelambakkam', 'Thaiyur'],
+  },
+  '5G': {
+    label: 'Bus 5G',
+    from: 'T. Nagar', to: 'Kannagi Nagar',
+    stops: ['T. Nagar', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Kannagi Nagar'],
+  },
+  '5S': {
+    label: 'Bus 5S',
+    from: 'Saidapet', to: 'Kelambakkam',
+    stops: ['Saidapet', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
+  },
+  '91': {
+    label: 'Bus 91',
+    from: 'Thiruvanmiyur', to: 'Tambaram',
+    stops: ['Thiruvanmiyur', 'LB Road', 'Perungudi', 'SRP Tools', 'Thoraipakkam', 'Pallavaram', 'Chromepet', 'Tambaram'],
+  },
+  '95': {
+    label: 'Bus 95',
+    from: 'Thiruvanmiyur (LB Road)', to: 'Tambaram East',
+    stops: ['Thiruvanmiyur', 'LB Road', 'Perungudi', 'Sholinganallur', 'Navalur', 'Medavakkam', 'Tambaram East'],
+  },
+  '95X': {
+    label: 'Bus 95X',
+    from: 'Thiruvanmiyur', to: 'Kelambakkam',
+    stops: ['Thiruvanmiyur', 'Perungudi', 'Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam'],
+  },
+  '102': {
+    label: 'Bus 102',
+    from: 'Broadway', to: 'Kelambakkam',
+    stops: ['Broadway', 'Adyar', 'SRP Tools', 'Perungudi', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
+  },
+  '102C': {
+    label: 'Bus 102C',
+    from: 'Island Ground', to: 'Chemmenchery',
+    stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Chemmenchery'],
+  },
+  '102CT': {
+    label: 'Bus 102CT',
+    from: 'Island Ground', to: 'Siruseri/SIPCOT',
+    stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Siruseri', 'SIPCOT'],
+  },
+  '102K': {
+    label: 'Bus 102K',
+    from: 'Island Ground', to: 'Kannagi Nagar',
+    stops: ['Island Ground', 'Santhome', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Kannagi Nagar'],
+  },
+  '102P': {
+    label: 'Bus 102P',
+    from: 'Island Ground', to: 'Perumbakkam',
+    stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Perumbakkam'],
+  },
+  '109': {
+    label: 'Bus 109',
+    from: 'Island Ground', to: 'Kovalam',
+    stops: ['Island Ground', 'Adyar', 'Thiruvanmiyur', 'Injambakkam', 'Kovalam'],
+  },
+  '119': {
+    label: 'Bus 119',
+    from: 'Guindy', to: 'Semmancheri',
+    stops: ['Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Semmancheri'],
+  },
+  '221': {
+    label: 'Bus 221',
+    from: 'Central', to: 'Thirupporur',
+    stops: ['Central', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kelambakkam', 'Thirupporur'],
+  },
+  '515': {
+    label: 'Bus 515',
+    from: 'Tambaram', to: 'Kelambakkam',
+    stops: ['Tambaram', 'Vandalur', 'Kandigai', 'Mambakkam', 'Pudupakkam', 'Kelambakkam'],
+  },
+  '519': {
+    label: 'Bus 519',
+    from: 'T. Nagar', to: 'Kelambakkam',
+    stops: ['T. Nagar', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
+  },
+  '523': {
+    label: 'Bus 523',
+    from: 'Thiruvanmiyur', to: 'Siruseri',
+    stops: ['Thiruvanmiyur', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Navalur', 'Siruseri'],
+  },
+  '555G': {
+    label: 'Bus 555G',
+    from: 'Sholinganallur', to: 'Guduvanchery',
+    stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam', 'Guduvanchery'],
+  },
+  '555P': {
+    label: 'Bus 555P',
+    from: 'Sholinganallur', to: 'Padappai',
+    stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam', 'Padappai'],
+  },
+  '555S': {
+    label: 'Bus 555S',
+    from: 'Sholinganallur', to: 'Kelambakkam',
+    stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam'],
+  },
+  '570C': {
+    label: 'Bus 570C',
+    from: 'CMBT', to: 'Kelambakkam',
+    stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Siruseri', 'Kelambakkam'],
+  },
+  '570P': {
+    label: 'Bus 570P',
+    from: 'CMBT', to: 'Perumbakkam',
+    stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Perumbakkam'],
+  },
+  '570X': {
+    label: 'Bus 570X',
+    from: 'CMBT', to: 'Thirupporur',
+    stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Thirupporur'],
+  },
+  'A1': {
+    label: 'Bus A1',
+    from: 'Central', to: 'Kannagi Nagar',
+    stops: ['Central', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Kannagi Nagar'],
+  },
+  'M19B': {
+    label: 'Bus M19B',
+    from: 'T. Nagar', to: 'Kannagi Nagar',
+    stops: ['T. Nagar', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Kannagi Nagar'],
+  },
+  'MAA2': {
+    label: 'Bus MAA2',
+    from: 'Chennai Airport', to: 'Siruseri IT Park',
+    stops: ['Chennai Airport', 'Pallavaram', 'Vels University', 'Thoraipakkam', 'Sholinganallur', 'Navalur', 'Siruseri IT Park'],
+  },
+  'T29C': {
+    label: 'Bus T29C',
+    from: 'Perambur', to: 'Thiruvanmiyur',
+    stops: ['Perambur', 'Central', 'Adyar', 'Thiruvanmiyur'],
+  },
+  '29A': {
+    label: 'Bus 29A',
+    from: 'Perambur', to: 'Anna Square',
+    stops: ['Perambur', 'Central', 'Anna Square'],
+  },
+  '29C': {
+    label: 'Bus 29C',
+    from: 'Perambur', to: 'Thiruvanmiyur',
+    stops: ['Perambur', 'Central', 'Adyar', 'Thiruvanmiyur'],
+  },
 };
 
 const CROWDING_OPTIONS = [
@@ -361,7 +489,12 @@ export default function App() {
               </button>
             ))}
           </div>
-          <p style={{ margin: '10px 0 0', fontSize: 13, color: '#94a3b8', lineHeight: 1.6 }}>
+          {BUS_DATA[busRoute]?.from && (
+            <p style={{ margin: '10px 0 2px', fontSize: 13, color: '#cbd5e1', fontWeight: 600 }}>
+              {BUS_DATA[busRoute].from} → {BUS_DATA[busRoute].to}
+            </p>
+          )}
+          <p style={{ margin: '0', fontSize: 12, color: '#64748b', lineHeight: 1.6 }}>
             {BUS_DATA[busRoute]?.stops.join(' → ')}
           </p>
         </div>
