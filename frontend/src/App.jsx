@@ -5,163 +5,67 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const BUS_DATA = {
   '19': {
     label: 'Bus 19',
-    from: 'T. Nagar', to: 'Thirupporur',
-    stops: ['T. Nagar', 'Saidapet', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Kumaran Nagar', 'Semmancheri', 'Navalur', 'Kelambakkam', 'Thirupporur'],
-  },
-  '19A': {
-    label: 'Bus 19A',
-    from: 'T. Nagar', to: 'Chemmenchery',
-    stops: ['T. Nagar', 'Saidapet', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Chemmenchery'],
+    stops: ['T. Nagar', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Navalur', 'Kazhipattur'],
   },
   '19B': {
-    label: 'Bus 19B',
-    from: 'Saidapet', to: 'Kelambakkam',
+    label: 'Bus 19B (Direct)',
     stops: ['Saidapet', 'Madhya Kailash', 'Tidel Park', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
-  },
-  '19B ET': {
-    label: 'Bus 19B ET',
-    from: 'T. Nagar', to: 'Thaiyur',
-    stops: ['T. Nagar', 'Sholinganallur', 'Navalur', 'Kelambakkam', 'Thaiyur'],
-  },
-  '5G': {
-    label: 'Bus 5G',
-    from: 'T. Nagar', to: 'Kannagi Nagar',
-    stops: ['T. Nagar', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Kannagi Nagar'],
-  },
-  '5S': {
-    label: 'Bus 5S',
-    from: 'Saidapet', to: 'Kelambakkam',
-    stops: ['Saidapet', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
   },
   '91': {
     label: 'Bus 91',
-    from: 'Thiruvanmiyur', to: 'Tambaram',
-    stops: ['Thiruvanmiyur', 'LB Road', 'Perungudi', 'SRP Tools', 'Thoraipakkam', 'Pallavaram', 'Chromepet', 'Tambaram'],
-  },
-  '95': {
-    label: 'Bus 95',
-    from: 'Thiruvanmiyur (LB Road)', to: 'Tambaram East',
-    stops: ['Thiruvanmiyur', 'LB Road', 'Perungudi', 'Sholinganallur', 'Navalur', 'Medavakkam', 'Tambaram East'],
-  },
-  '95X': {
-    label: 'Bus 95X',
-    from: 'Thiruvanmiyur', to: 'Kelambakkam',
-    stops: ['Thiruvanmiyur', 'Perungudi', 'Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam'],
+    stops: [
+      'Tambaram',
+      'Tambaram Sanatorium / MEPZ',
+      'Chromepet / MIT',
+      'Pallavaram',
+      'Vels University',
+      'Eachangadu / S. Kolathur',
+      'Kamakshi Hospital',
+      'Thoraipakkam Checkpost',
+      'Perungudi / Kandanchavadi',
+      'SRP Tools',
+      'Thiruvanmiyur Depot',
+    ],
   },
   '102': {
     label: 'Bus 102',
-    from: 'Broadway', to: 'Kelambakkam',
     stops: ['Broadway', 'Adyar', 'SRP Tools', 'Perungudi', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
-  },
-  '102C': {
-    label: 'Bus 102C',
-    from: 'Island Ground', to: 'Chemmenchery',
-    stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Chemmenchery'],
-  },
-  '102CT': {
-    label: 'Bus 102CT',
-    from: 'Island Ground', to: 'Siruseri/SIPCOT',
-    stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Siruseri', 'SIPCOT'],
   },
   '102K': {
     label: 'Bus 102K',
-    from: 'Island Ground', to: 'Kannagi Nagar',
-    stops: ['Island Ground', 'Santhome', 'Adyar', 'SRP Tools', 'Thoraipakkam', 'Kannagi Nagar'],
-  },
-  '102P': {
-    label: 'Bus 102P',
-    from: 'Island Ground', to: 'Perumbakkam',
-    stops: ['Island Ground', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Perumbakkam'],
-  },
-  '109': {
-    label: 'Bus 109',
-    from: 'Island Ground', to: 'Kovalam',
-    stops: ['Island Ground', 'Adyar', 'Thiruvanmiyur', 'Injambakkam', 'Kovalam'],
-  },
-  '119': {
-    label: 'Bus 119',
-    from: 'Guindy', to: 'Semmancheri',
-    stops: ['Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Semmancheri'],
-  },
-  '221': {
-    label: 'Bus 221',
-    from: 'Central', to: 'Thirupporur',
-    stops: ['Central', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Navalur', 'Kelambakkam', 'Thirupporur'],
+    stops: ['Broadway', 'Santhome', 'Adyar Depot', 'SRP Tools', 'Thoraipakkam', 'Kannagi Nagar'],
   },
   '515': {
     label: 'Bus 515',
-    from: 'Tambaram', to: 'Kelambakkam',
-    stops: ['Tambaram', 'Vandalur', 'Kandigai', 'Mambakkam', 'Pudupakkam', 'Kelambakkam'],
+    stops: ['Tambaram', 'Vandalur Zoo', 'Kandigai', 'Mambakkam', 'Pudupakkam', 'Kelambakkam'],
   },
   '519': {
     label: 'Bus 519',
-    from: 'T. Nagar', to: 'Kelambakkam',
     stops: ['T. Nagar', 'Adyar', 'SRP Tools', 'Sholinganallur', 'Navalur', 'Kelambakkam'],
   },
   '523': {
     label: 'Bus 523',
-    from: 'Thiruvanmiyur', to: 'Siruseri',
     stops: ['Thiruvanmiyur', 'SRP Tools', 'Thoraipakkam', 'Sholinganallur', 'Navalur', 'Siruseri'],
   },
-  '555G': {
-    label: 'Bus 555G',
-    from: 'Sholinganallur', to: 'Guduvanchery',
-    stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam', 'Guduvanchery'],
-  },
-  '555P': {
-    label: 'Bus 555P',
-    from: 'Sholinganallur', to: 'Padappai',
-    stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam', 'Padappai'],
-  },
-  '555S': {
-    label: 'Bus 555S',
-    from: 'Sholinganallur', to: 'Kelambakkam',
-    stops: ['Sholinganallur', 'Navalur', 'Siruseri', 'Kelambakkam'],
-  },
-  '570C': {
-    label: 'Bus 570C',
-    from: 'CMBT', to: 'Kelambakkam',
-    stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Siruseri', 'Kelambakkam'],
-  },
-  '570P': {
-    label: 'Bus 570P',
-    from: 'CMBT', to: 'Perumbakkam',
-    stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Perumbakkam'],
-  },
-  '570X': {
-    label: 'Bus 570X',
-    from: 'CMBT', to: 'Thirupporur',
-    stops: ['CMBT', 'Guindy', 'Velachery', 'Sholinganallur', 'Navalur', 'Thirupporur'],
-  },
-  'A1': {
-    label: 'Bus A1',
-    from: 'Central', to: 'Kannagi Nagar',
-    stops: ['Central', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Kannagi Nagar'],
-  },
-  'M19B': {
-    label: 'Bus M19B',
-    from: 'T. Nagar', to: 'Kannagi Nagar',
-    stops: ['T. Nagar', 'Adyar', 'Thiruvanmiyur', 'Sholinganallur', 'Kannagi Nagar'],
+  '570': {
+    label: 'Bus 570',
+    stops: ['CMBT (Koyambedu)', 'Guindy', 'Velachery', 'Sholinganallur', 'Siruseri IT Park', 'Kelambakkam'],
   },
   'MAA2': {
     label: 'Bus MAA2',
-    from: 'Chennai Airport', to: 'Siruseri IT Park',
-    stops: ['Chennai Airport', 'Pallavaram', 'Vels University', 'Thoraipakkam', 'Sholinganallur', 'Navalur', 'Siruseri IT Park'],
-  },
-  'T29C': {
-    label: 'Bus T29C',
-    from: 'Perambur', to: 'Thiruvanmiyur',
-    stops: ['Perambur', 'Central', 'Adyar', 'Thiruvanmiyur'],
-  },
-  '29A': {
-    label: 'Bus 29A',
-    from: 'Perambur', to: 'Anna Square',
-    stops: ['Perambur', 'Central', 'Anna Square'],
-  },
-  '29C': {
-    label: 'Bus 29C',
-    from: 'Perambur', to: 'Thiruvanmiyur',
-    stops: ['Perambur', 'Central', 'Adyar', 'Thiruvanmiyur'],
+    stops: [
+      'Chennai Airport',
+      'Pallavaram',
+      'Vels University',
+      'Eachangadu Junction',
+      'Kamakshi Memorial Hospital',
+      'Thoraipakkam / Chennai One',
+      'Mettukuppam',
+      'Sholinganallur',
+      'Sathyabama University',
+      'Navalur',
+      'Siruseri IT Park',
+    ],
   },
 };
 
@@ -475,9 +379,9 @@ export default function App() {
 
         {/* Route Selector */}
         <div style={{ background: '#1e293b', borderRadius: 12, padding: 16, marginBottom: 16 }}>
-          <p style={{ margin: '0 0 10px', fontSize: 12, color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Select Route</p>
+          <p style={{ margin: '0 0 10px', fontSize: 13, color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Select Route</p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {Object.entries(BUS_DATA).map(([key]) => (
+            {busKeys.map(key => (
               <button key={key} onClick={() => setBusRoute(key)} style={{
                 padding: '8px 14px', borderRadius: 8, border: 'none', cursor: 'pointer',
                 fontWeight: 600, fontSize: 13,
@@ -489,12 +393,7 @@ export default function App() {
               </button>
             ))}
           </div>
-          {BUS_DATA[busRoute]?.from && (
-            <p style={{ margin: '10px 0 2px', fontSize: 13, color: '#cbd5e1', fontWeight: 600 }}>
-              {BUS_DATA[busRoute].from} → {BUS_DATA[busRoute].to}
-            </p>
-          )}
-          <p style={{ margin: '0', fontSize: 12, color: '#64748b', lineHeight: 1.6 }}>
+          <p style={{ margin: '10px 0 0', fontSize: 12, color: '#64748b' }}>
             {BUS_DATA[busRoute]?.stops.join(' → ')}
           </p>
         </div>
@@ -567,33 +466,47 @@ export default function App() {
 
                   if (r.just_left) {
                     return (
-                      <div key={i} style={{ background: '#1e293b', borderRadius: 12, padding: 14, borderLeft: '4px solid #6366f1' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-                              <span style={{ fontSize: 18 }}>🚌💨</span>
-                              <span style={{ fontWeight: 700, fontSize: 14, color: '#818cf8' }}>
-                                Left {r.boarding_stop || 'a stop'}
-                              </span>
-                              <span style={{ fontSize: 10, background: r.is_ac ? '#0c4a6e' : '#1c1917', color: r.is_ac ? '#38bdf8' : '#a8a29e', borderRadius: 4, padding: '1px 6px', fontWeight: 700 }}>
-                                {r.is_ac ? '❄️ AC' : '🌡️'}
+                      <div key={i} style={{ background: '#1e293b', borderRadius: 12, padding: 16, borderLeft: '4px solid #6366f1' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                              <span style={{ fontSize: 20 }}>🚌💨</span>
+                              <span style={{ fontWeight: 700, fontSize: 15, color: '#818cf8' }}>
+                                Bus {busRoute} just left {r.boarding_stop || 'a stop'}
                               </span>
                             </div>
-                            <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>
-                              👤 {r.reporter_name || 'Anonymous'} · {ago}
+                            <p style={{ margin: 0, fontSize: 13, color: '#94a3b8' }}>
+                              {ago === 'just now' ? 'Just departed — heading your way' : `Left ${ago} — should reach you soon`}
                             </p>
-                          </div>
-                          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-                            <span style={{ fontSize: 12, color: '#cbd5e1', fontWeight: 600 }}>{timeStr}</span>
-                            <button onClick={() => handleHelpful(r.id)} style={{
-                              background: alreadyHelped ? '#1e3a5f' : '#334155',
-                              border: 'none', borderRadius: 6, padding: '3px 8px',
-                              cursor: alreadyHelped ? 'default' : 'pointer',
-                              color: alreadyHelped ? '#60a5fa' : '#94a3b8',
-                              fontSize: 11, fontWeight: 600,
+                            {/* AC Badge */}
+                            <span style={{
+                              display: 'inline-block', marginTop: 6,
+                              background: r.is_ac ? '#0c4a6e' : '#1c1917',
+                              color: r.is_ac ? '#38bdf8' : '#a8a29e',
+                              borderRadius: 6, padding: '2px 8px', fontSize: 11, fontWeight: 700,
                             }}>
-                              👍 {r.helpful_count || 0}
-                            </button>
+                              {r.is_ac ? '❄️ AC' : '🌡️ Non-AC'}
+                            </span>
+                            {/* Reporter name */}
+                            <p style={{ margin: '4px 0 0', fontSize: 11, color: '#475569' }}>
+                              👤 {r.reporter_name || 'Anonymous'}
+                            </p>
+                            {/* Helpful + Views row */}
+                            <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+                              <button onClick={() => handleHelpful(r.id)} style={{
+                                background: alreadyHelped ? '#1e3a5f' : '#334155',
+                                border: 'none', borderRadius: 6, padding: '4px 10px',
+                                cursor: alreadyHelped ? 'default' : 'pointer',
+                                color: alreadyHelped ? '#60a5fa' : '#94a3b8',
+                                fontSize: 12, fontWeight: 600,
+                              }}>
+                                👍 {r.helpful_count || 0} helpful
+                              </button>
+                            </div>
+                          </div>
+                          <div style={{ textAlign: 'right', marginLeft: 8 }}>
+                            <p style={{ margin: 0, fontSize: 12, color: '#cbd5e1', fontWeight: 600 }}>{timeStr}</p>
+                            <p style={{ margin: '2px 0 0', fontSize: 11, color: '#475569' }}>{ago}</p>
                           </div>
                         </div>
                       </div>
@@ -602,31 +515,48 @@ export default function App() {
 
                   const style = getCrowdingStyle(r.crowding_level);
                   return (
-                    <div key={i} style={{ background: '#1e293b', borderRadius: 12, padding: 14, borderLeft: `4px solid ${style.color}` }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
-                            <span style={{ fontSize: 18 }}>{style.emoji}</span>
-                            <span style={{ fontWeight: 700, fontSize: 14, color: style.color }}>{r.crowding_level}% — {style.desc}</span>
-                            <span style={{ fontSize: 10, background: r.is_ac ? '#0c4a6e' : '#1c1917', color: r.is_ac ? '#38bdf8' : '#a8a29e', borderRadius: 4, padding: '1px 6px', fontWeight: 700 }}>
-                              {r.is_ac ? '❄️ AC' : '🌡️'}
-                            </span>
+                    <div key={i} style={{ background: '#1e293b', borderRadius: 12, padding: 16, borderLeft: `4px solid ${style.color}` }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div style={{ flex: 1 }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                            <span style={{ fontSize: 20 }}>{style.emoji}</span>
+                            <span style={{ fontWeight: 700, fontSize: 16, color: style.color }}>{r.crowding_level}% Crowded</span>
                           </div>
-                          <p style={{ margin: 0, fontSize: 12, color: '#64748b' }}>
-                            📍 {r.boarding_stop || '—'} · 👤 {r.reporter_name || 'Anonymous'} · {ago}
-                          </p>
-                        </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 4 }}>
-                          <span style={{ fontSize: 12, color: '#cbd5e1', fontWeight: 600 }}>{timeStr}</span>
-                          <button onClick={() => handleHelpful(r.id)} style={{
-                            background: alreadyHelped ? '#1e3a5f' : '#334155',
-                            border: 'none', borderRadius: 6, padding: '3px 8px',
-                            cursor: alreadyHelped ? 'default' : 'pointer',
-                            color: alreadyHelped ? '#60a5fa' : '#94a3b8',
-                            fontSize: 11, fontWeight: 600,
+                          <p style={{ margin: 0, fontSize: 13, color: '#94a3b8' }}>{style.desc}</p>
+                          {/* AC Badge */}
+                          <span style={{
+                            display: 'inline-block', marginTop: 6,
+                            background: r.is_ac ? '#0c4a6e' : '#1c1917',
+                            color: r.is_ac ? '#38bdf8' : '#a8a29e',
+                            borderRadius: 6, padding: '2px 8px', fontSize: 11, fontWeight: 700,
                           }}>
-                            👍 {r.helpful_count || 0}
-                          </button>
+                            {r.is_ac ? '❄️ AC' : '🌡️ Non-AC'}
+                          </span>
+                          {r.boarding_stop && (
+                            <p style={{ margin: '4px 0 0', fontSize: 12, color: '#64748b' }}>
+                              📍 Reported at <span style={{ color: '#cbd5e1', fontWeight: 600 }}>{r.boarding_stop}</span>
+                            </p>
+                          )}
+                          {/* Reporter name */}
+                          <p style={{ margin: '4px 0 0', fontSize: 11, color: '#475569' }}>
+                            👤 {r.reporter_name || 'Anonymous'}
+                          </p>
+                          {/* Helpful + Views row */}
+                          <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+                            <button onClick={() => handleHelpful(r.id)} style={{
+                              background: alreadyHelped ? '#1e3a5f' : '#334155',
+                              border: 'none', borderRadius: 6, padding: '4px 10px',
+                              cursor: alreadyHelped ? 'default' : 'pointer',
+                              color: alreadyHelped ? '#60a5fa' : '#94a3b8',
+                              fontSize: 12, fontWeight: 600,
+                            }}>
+                              👍 {r.helpful_count || 0} helpful
+                            </button>
+                          </div>
+                        </div>
+                        <div style={{ textAlign: 'right', marginLeft: 8 }}>
+                          <p style={{ margin: 0, fontSize: 12, color: '#cbd5e1', fontWeight: 600 }}>{timeStr}</p>
+                          <p style={{ margin: '2px 0 0', fontSize: 11, color: '#475569' }}>{ago}</p>
                         </div>
                       </div>
                     </div>
@@ -646,7 +576,7 @@ export default function App() {
               <p style={{ margin: '0 0 10px', fontSize: 13, color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>Your Name</p>
               <input
                 type="text"
-                placeholder="e.g. Maddy, Priya... (optional)"
+                placeholder="e.g. Arun, Priya... (optional)"
                 value={reporterName}
                 onChange={e => setReporterName(e.target.value)}
                 maxLength={50}
